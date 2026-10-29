@@ -71,7 +71,7 @@ class AccessibilityCalculator:
     @staticmethod
     def calculate_diminishing_returns(attractiveness, dim_const):
         """Calculate diminishing returns based on cumulative attractiveness."""
-        attractiveness_sum = attractiveness.cumsum(axis=1).astype(np.int64)
+        attractiveness_sum = (attractiveness.cumsum(axis=1) - attractiveness).astype(np.int64)
         dim = np.array([(1-np.exp(-dim_const*(x+1))) - (1-np.exp(-dim_const*x)) for x in attractiveness_sum])
         return dim
     
