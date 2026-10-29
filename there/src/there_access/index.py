@@ -113,7 +113,7 @@ def _calculate_accessibility_score(access, relevant_pois, dist_const, dim_const,
     # are found (within distance), the returned poi_ids will be NaN for the remaining num_pois columns
     attractiveness = np.nan_to_num(attract.values, nan=0.0)
     there = np.nan_to_num(there_weight.values, nan=0.0)
-    attractiveness_sum = attractiveness.cumsum(axis=1).astype(np.int64)
+    attractiveness_sum = (attractiveness.cumsum(axis=1) - attractiveness).astype(np.int64)
 
     dim = np.array([(1-np.exp(-dim_const*(x+1))) - (1-np.exp(-dim_const*x)) for x in attractiveness_sum])
 
@@ -322,7 +322,7 @@ def test_transit_index(walk_network, integrated_network, pois, poi_dictionary, p
                 
                 attractiveness = np.nan_to_num(attract.values, nan=0.0)
                 prev_there = np.nan_to_num(there_weight.values, nan=0.0)
-                attractiveness_sum = attractiveness.cumsum(axis=1).astype(np.int64)
+                attractiveness_sum = (attractiveness.cumsum(axis=1) - attractiveness).astype(np.int64)
 
                 dim = np.array([(1-np.exp(-poi_lambdas[category]*(x+1))) - (1-np.exp(-poi_lambdas[category]*x)) for x in attractiveness_sum])
 
